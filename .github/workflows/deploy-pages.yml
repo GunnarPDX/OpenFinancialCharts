@@ -33,9 +33,10 @@ jobs:
           # CRA treats lint warnings as errors when CI=true; don't fail the
           # deploy on warnings
           CI: "false"
+      # Pages must be enabled once by hand (Settings → Pages → Source:
+      # "GitHub Actions") — the workflow token can't create the Pages site
+      # itself, that API call needs repo admin permissions
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: build
