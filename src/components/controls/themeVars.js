@@ -4,10 +4,11 @@
 // custom themes have full parity with the built-ins.
 
 export const BUILTIN_THEMES = [
-  ['default', 'Default'],
-  ['dark', 'Dark'],
+  ['default', 'Dark'],
+  ['black', 'Black'],
   ['submariner', 'Submariner'],
-  ['bloodbath', 'Max Pain'],
+  ['red', 'Red'],
+  ['green', 'Green'],
   ['ash', 'Ash'],
   ['soft', 'Soft'],
   ['warm', 'Warm'],

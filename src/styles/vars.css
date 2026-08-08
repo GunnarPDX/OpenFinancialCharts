@@ -33,7 +33,7 @@
 }
 
 /* even darker than the default */
-.ofc-theme-dark {
+.ofc-theme-black {
   --background: rgb(6, 7, 10);
   --background-dark: rgb(0, 0, 0);
   --menu-background: rgb(9, 10, 14);
@@ -61,7 +61,7 @@
 }
 
 /* deep red */
-.ofc-theme-bloodbath {
+.ofc-theme-red {
   --background: #1d0709;
   --background-dark: #140406;
   --menu-background: #250a0d;
@@ -73,6 +73,21 @@
   --axis-lines: #6b2a30;
   --text-faint: #b08a8d;
   --text-subtle: #e5c9cb;
+}
+
+/* deep green */
+.ofc-theme-green {
+  --background: #071d0d;
+  --background-dark: #041408;
+  --menu-background: #0a2513;
+  --input-background: #0a2513;
+  --button-background: #143f22;
+  --button-active-background: #1a522b;
+  --border: rgba(150, 255, 180, 0.13);
+  --grid-lines: rgba(0, 20, 8, 0.45);
+  --axis-lines: #2a6b3f;
+  --text-faint: #8ab094;
+  --text-subtle: #c9e5d1;
 }
 
 /* medium grey */

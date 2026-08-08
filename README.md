@@ -227,8 +227,8 @@ below (also exported as `DEFAULT_CONFIG`). Keys are snake_case.
   dataFeed={myDataFeed}
   ticker="SPY"
   config={{
-    default_theme: 'dark',
-    themes_hidden: ['max pain'],
+    default_theme: 'black',
+    themes_hidden: ['red'],
     candle_sizes: ['1d', '1w'],
     timeframes: ['1M', '6M', '1Y', '5Y'],
     show_script_editor: false,
@@ -246,7 +246,7 @@ They never override a choice the user already made and saved.
 
 | Key | Default | Description |
 |---|---|---|
-| `default_theme` | `'default'` | One of `default`, `dark`, `submariner`, `bloodbath`, `ash`, `soft`, `warm`, `light`. Users can also build their own — see [Custom themes](#custom-themes). |
+| `default_theme` | `'default'` | One of `default` (shown as "Dark" in the menu), `black`, `submariner`, `red`, `green`, `ash`, `soft`, `warm`, `light`. Users can also build their own — see [Custom themes](#custom-themes). |
 | `default_line_type` | `'candles'` | Any value from the exported `lineTypes` / `aggregatedTypes`. |
 | `default_candle_size` | `'1m'` | Initial candle size (feed-defined string). |
 | `default_timeframe` | `'2D'` | Initial fetch timeframe (feed-defined string). |

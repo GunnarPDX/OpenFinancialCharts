@@ -52,7 +52,7 @@ describe('config prop', () => {
   test('default_* apply when nothing is persisted', () => {
     const { getByTestId } = render(
       <ChartProvider dataFeed={makeFeed()} config={{
-        default_theme: 'dark',
+        default_theme: 'black',
         default_line_type: 'area',
         default_candle_size: '1d',
         default_timeframe: '1Y',
@@ -61,13 +61,13 @@ describe('config prop', () => {
         <Probe pick={c => [c.theme, c.lineType, c.candleSize, c.timeframe, c.yLogScale]} />
       </ChartProvider>
     );
-    expect(JSON.parse(getByTestId('probe').textContent)).toEqual(['dark', 'area', '1d', '1Y', true]);
+    expect(JSON.parse(getByTestId('probe').textContent)).toEqual(['black', 'area', '1d', '1Y', true]);
   });
 
   test('default_* never override persisted user choices', () => {
     localStorage.setItem('ofc-chart-state', JSON.stringify({ theme: 'soft', lineType: 'bars' }));
     const { getByTestId } = render(
-      <ChartProvider dataFeed={makeFeed()} config={{ default_theme: 'dark', default_line_type: 'area' }}>
+      <ChartProvider dataFeed={makeFeed()} config={{ default_theme: 'black', default_line_type: 'area' }}>
         <Probe pick={c => [c.theme, c.lineType]} />
       </ChartProvider>
     );
