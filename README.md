@@ -5,6 +5,11 @@ other line types, technical studies, drawing tools, a built-in script editor,
 zoom/pan, live tick updates — driven entirely by a data feed **you** provide,
 so it works with any market-data API.
 
+**[Live demo →](https://gunnarpdx.github.io/OpenFinancialCharts/)** — the full
+chart running on simulated ticker data (the bundled sample series replayed
+with a random-walk live stream), so you can try every feature without an API
+key.
+
 The scripting language (editor studies, strategies, conformance-tested
 backend runtimes) lives in its own package,
 [`theta-script`](https://www.npmjs.com/package/theta-script), consumed as a
@@ -420,7 +425,13 @@ npm run build:lib  # package output → dist/ (transpiled JS + styles.css)
 The demo (`src/App.js`) uses the feed in `src/data_feed/` (Unusual Whales;
 token via `REACT_APP_UW_TOKEN` or localStorage `ofc-uw-token`). That directory
 is demo-only and excluded from the package — it's a reference implementation
-of both interfaces above.
+of both interfaces above. Without a token the demo falls back to the bundled
+ticker-data simulator (`src/demo/data_feed/simulatorFeed.js`).
+
+The [live demo](https://gunnarpdx.github.io/OpenFinancialCharts/) is this same
+app deployed to GitHub Pages by `.github/workflows/deploy-pages.yml` on every
+push to `main`. CI builds without a token, so the published site always runs
+on the simulator.
 
 ## Publishing
 
