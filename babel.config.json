@@ -1,0 +1,14 @@
+{
+  "presets": [
+    ["@babel/preset-env", { "modules": false, "targets": "defaults" }],
+    ["@babel/preset-react", { "runtime": "automatic" }]
+  ],
+  "env": {
+    "cjs": {
+      "presets": [
+        ["@babel/preset-env", { "modules": "commonjs", "targets": "defaults" }],
+        ["@babel/preset-react", { "runtime": "automatic" }]
+      ]
+    }
+  }
+}

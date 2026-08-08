@@ -1,0 +1,147 @@
+
+:root {
+
+  /* steers native form widgets (date pickers, scrollbars) to match; light
+     themes override it below */
+  --color-scheme: dark;
+
+  --text: var(--ofc-stone-100);
+  --text-subtle: var(--ofc-stone-200);
+  --text-faint: var(--ofc-stone-400);
+
+  --background: rgb(19, 20, 25);
+  --background-dark: var(--ofc-stone-950);
+  --menu-background: rgb(19, 20, 25);
+  --input-background: rgb(19, 20, 25);
+  --button-background: rgb(32, 35, 45);
+  --button-active-background: rgb(12, 13, 17);
+  --border: rgba(255, 255, 255, 0.06);
+  --grid-lines: rgba(0, 0, 0, 0.4);
+  --axis-lines: rgb(66, 67, 91);
+
+  --green: var(--ofc-emerald-600);
+  --red: var(--ofc-rose-600); /* rose-600 clears 3:1 on the dark surface; rose-700 sat at 2.93 */
+  --dark-green: var(--ofc-emerald-800);
+  --dark-red: var(--ofc-rose-900);
+  --light-blue: var(--ofc-cyan-100);
+
+  --area-line-color: var(--ofc-sky-600);
+  --area-gradient-color-1: var(--ofc-cyan-400);
+  --area-gradient-color-2: var(--ofc-cyan-300);
+
+  --dots-color: var(--ofc-amber-100);
+}
+
+/* even darker than the default */
+.ofc-theme-dark {
+  --background: rgb(6, 7, 10);
+  --background-dark: rgb(0, 0, 0);
+  --menu-background: rgb(9, 10, 14);
+  --input-background: rgb(9, 10, 14);
+  --button-background: rgb(28, 29, 36);
+  --button-active-background: rgb(40, 41, 50);
+  --border: rgba(255, 255, 255, 0.08);
+  --grid-lines: rgba(255, 255, 255, 0.07);
+  --axis-lines: rgb(52, 53, 72);
+}
+
+/* deep navy blue */
+.ofc-theme-submariner {
+  --background: #081527;
+  --background-dark: #050e1b;
+  --menu-background: #0c1c33;
+  --input-background: #0c1c33;
+  --button-background: #16294a;
+  --button-active-background: #1e355c;
+  --border: rgba(140, 180, 255, 0.12);
+  --grid-lines: rgba(0, 0, 20, 0.45);
+  --axis-lines: #2c4a73;
+  --text-faint: #7e93b3;
+  --text-subtle: #c3d2e8;
+}
+
+/* deep red */
+.ofc-theme-bloodbath {
+  --background: #1d0709;
+  --background-dark: #140406;
+  --menu-background: #250a0d;
+  --input-background: #250a0d;
+  --button-background: #3f1418;
+  --button-active-background: #521a1f;
+  --border: rgba(255, 150, 150, 0.13);
+  --grid-lines: rgba(20, 0, 0, 0.45);
+  --axis-lines: #6b2a30;
+  --text-faint: #b08a8d;
+  --text-subtle: #e5c9cb;
+}
+
+/* medium grey */
+.ofc-theme-ash {
+  --text: #f2f2f0;
+  --text-subtle: #d6d6d2;
+  --text-faint: #a3a39e;
+  --background: #4a4c50;
+  --background-dark: #3e4044;
+  --menu-background: #54565b;
+  --input-background: #54565b;
+  --button-background: #64666c;
+  --button-active-background: #71747a;
+  --border: rgba(255, 255, 255, 0.14);
+  --grid-lines: rgba(0, 0, 0, 0.16);
+  --axis-lines: #7c7e85;
+  --dots-color: #fbbf24;
+}
+
+/* light grey surface */
+.ofc-theme-soft {
+  --color-scheme: light;
+  --text: #1c1917;
+  --text-subtle: #44403c;
+  --text-faint: #78716c;
+  --background: #dcd9d3;
+  --background-dark: #cfccc5;
+  --menu-background: #e6e3dd;
+  --input-background: #e6e3dd;
+  --button-background: #cdc9c2;
+  --button-active-background: #c0bcb4;
+  --border: rgba(0, 0, 0, 0.14);
+  --grid-lines: rgba(0, 0, 0, 0.07);
+  --axis-lines: #a39e96;
+  --dots-color: #b45309;
+}
+
+/* warm grey with a touch of yellow/orange */
+.ofc-theme-warm {
+  --color-scheme: light;
+  --text: #211a10;
+  --text-subtle: #4a4030;
+  --text-faint: #7d705a;
+  --background: #d9d0be;
+  --background-dark: #ccc2ad;
+  --menu-background: #e3dbc9;
+  --input-background: #e3dbc9;
+  --button-background: #c9bda5;
+  --button-active-background: #bcb098;
+  --border: rgba(70, 50, 15, 0.16);
+  --grid-lines: rgba(70, 50, 15, 0.07);
+  --axis-lines: #a89877;
+  --dots-color: #b45309;
+}
+
+/* white surface */
+.ofc-theme-light {
+  --color-scheme: light;
+  --text: #111114;
+  --text-subtle: #3f3f46;
+  --text-faint: #71717a;
+  --background: #ffffff;
+  --background-dark: #f4f4f5;
+  --menu-background: #f7f7f8;
+  --input-background: #f7f7f8;
+  --button-background: #e7e7ea;
+  --button-active-background: #dcdce0;
+  --border: rgba(0, 0, 0, 0.12);
+  --grid-lines: rgba(0, 0, 0, 0.06);
+  --axis-lines: #a1a1aa;
+  --dots-color: #b45309;
+}

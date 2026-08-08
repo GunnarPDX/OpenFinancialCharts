@@ -1,0 +1,5 @@
+// Single stylesheet shipped with the package as dist/styles.css.
+// Extension-less imports so dart-sass inlines the .css files.
+@import 'base-colors';
+@import 'vars';
+@import 'app';

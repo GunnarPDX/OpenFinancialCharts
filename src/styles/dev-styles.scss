@@ -1,0 +1,23 @@
+html {
+  background: black;
+}
+
+// demo-only badge shown when the chart runs on the bundled data simulator;
+// sits over the plot's bottom-left corner, above the svg but below menus
+.ofc-demo-watermark {
+  position: absolute;
+  top: 52px; // just below the control bar
+  right: 78px; // clear of the y-axis price labels
+  z-index: 1;
+  pointer-events: none;
+  padding: 3px 8px;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint, #777);
+  background: rgba(0, 0, 0, 0.25);
+  opacity: 0.8;
+}
