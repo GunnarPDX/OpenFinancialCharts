@@ -1,0 +1,459 @@
+// Demo-site page styles (landing page around the live chart). Demo-only,
+// like dev-styles.scss — never shipped with the package. Everything is
+// prefixed `site-` to stay clear of the chart's `ofc-` namespace.
+
+$site-bg: #0a0b0f;
+$site-panel: #12141b;
+$site-border: rgba(255, 255, 255, 0.08);
+$site-text: #e8eaf0;
+$site-text-dim: #9aa1b2;
+$site-accent-1: #22d3ee;
+$site-accent-2: #34d399;
+
+.site {
+  min-height: 100vh;
+  background:
+    radial-gradient(1200px 500px at 50% -120px, rgba(34, 211, 238, 0.09), transparent 70%),
+    radial-gradient(900px 420px at 85% 15%, rgba(52, 211, 153, 0.05), transparent 70%),
+    $site-bg;
+  color: $site-text;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+
+  // scoped to site-* elements so nothing leaks into the chart (which lives
+  // inside .site-demo-chart and manages its own styles); plain text children
+  // (h1/p/li) are auto-width, so they don't need border-box
+  [class^='site-'] { box-sizing: border-box; }
+
+  // base link color, deliberately low-specificity (0,1,1): the nav/button
+  // rules below are a.site-* (same specificity, later in the file) so they
+  // win by source order. The chart renders no <a> elements, so this can't
+  // restyle anything inside .site-demo-chart.
+  a { color: $site-accent-1; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+}
+
+.site-container {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+// ---- top nav ----
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(12px);
+  background: rgba(10, 11, 15, 0.75);
+  border-bottom: 1px solid $site-border;
+
+  .site-container {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    height: 56px;
+  }
+}
+
+a.site-nav-logo {
+  font-weight: 700;
+  font-size: 15px;
+  color: $site-text;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  &:hover { text-decoration: none; }
+
+  span { color: $site-accent-2; }
+}
+
+.site-nav-links {
+  display: flex;
+  gap: 20px;
+  margin-left: auto;
+  font-size: 14px;
+
+  a {
+    color: $site-text-dim;
+    &:hover { color: $site-text; text-decoration: none; }
+  }
+}
+
+// ---- hero ----
+
+.site-hero {
+  padding: 88px 0 48px;
+  text-align: center;
+}
+
+.site-hero-eyebrow {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $site-accent-2;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  border-radius: 999px;
+  padding: 5px 14px;
+  margin-bottom: 24px;
+}
+
+.site-hero h1 {
+  font-size: clamp(38px, 6vw, 60px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 0 0 20px;
+  background: linear-gradient(100deg, #fff 20%, $site-accent-1 60%, $site-accent-2 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.site-hero-tagline {
+  max-width: 640px;
+  margin: 0 auto 32px;
+  font-size: 18px;
+  color: $site-text-dim;
+}
+
+.site-hero-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+
+a.site-btn {
+  display: inline-block;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition: filter 0.15s, background 0.15s;
+  &:hover { text-decoration: none; filter: brightness(1.1); }
+}
+
+a.site-btn-primary {
+  background: linear-gradient(100deg, $site-accent-1, $site-accent-2);
+  color: #06281e;
+}
+
+a.site-btn-ghost {
+  border-color: $site-border;
+  color: $site-text;
+  background: rgba(255, 255, 255, 0.03);
+  &:hover { background: rgba(255, 255, 255, 0.07); }
+}
+
+.site-install {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 14px;
+  color: $site-text;
+  background: $site-panel;
+  border: 1px solid $site-border;
+  border-radius: 8px;
+  padding: 10px 8px 10px 18px;
+
+  &::before { content: '$'; color: $site-accent-2; }
+
+  button {
+    font: inherit;
+    font-size: 12px;
+    color: $site-text-dim;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid $site-border;
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    &:hover { color: $site-text; }
+  }
+}
+
+// ---- stats strip ----
+
+.site-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+  padding: 30px 0 10px;
+
+  div {
+    text-align: center;
+
+    strong {
+      display: block;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: $site-text;
+    }
+
+    span {
+      font-size: 13px;
+      color: $site-text-dim;
+    }
+  }
+}
+
+// ---- live chart panel ----
+
+.site-demo {
+  padding: 40px 0 24px;
+
+  .site-container { max-width: 1240px; }
+}
+
+.site-demo-panel {
+  border: 1px solid $site-border;
+  border-radius: 12px;
+  overflow: hidden;
+  background: $site-panel;
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8);
+}
+
+.site-demo-panel-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid $site-border;
+  font-size: 13px;
+  color: $site-text-dim;
+
+  i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    &:first-child { background: rgba(255, 95, 87, 0.7); }
+    &:nth-child(2) { background: rgba(254, 188, 46, 0.7); }
+    &:nth-child(3) { background: rgba(40, 200, 64, 0.7); }
+  }
+
+  span { margin-left: 10px; }
+}
+
+.site-demo-chart {
+  position: relative;
+  height: 680px;
+}
+
+.site-demo-hint {
+  text-align: center;
+  font-size: 13px;
+  color: $site-text-dim;
+  margin-top: 14px;
+}
+
+// ---- sections ----
+
+.site-section {
+  padding: 56px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+  h2 {
+    font-size: 30px;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+  }
+
+  > .site-container > p {
+    color: $site-text-dim;
+    max-width: 680px;
+    margin-top: 0;
+  }
+}
+
+.site-section-kicker {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $site-accent-1;
+  margin-bottom: 10px;
+}
+
+// features grid
+.site-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.site-feature {
+  background: $site-panel;
+  border: 1px solid $site-border;
+  border-radius: 12px;
+  padding: 20px 22px;
+  transition: border-color 0.15s, transform 0.15s;
+
+  &:hover {
+    border-color: rgba(34, 211, 238, 0.35);
+    transform: translateY(-2px);
+  }
+
+  h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 8px;
+
+    &::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 2px;
+      background: linear-gradient(120deg, $site-accent-1, $site-accent-2);
+      flex: none;
+    }
+  }
+
+  p {
+    font-size: 14px;
+    color: $site-text-dim;
+    margin: 0;
+  }
+}
+
+// docs rows: prose beside a code block
+.site-docrow {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: 32px;
+  align-items: start;
+  margin-top: 32px;
+
+  @media (max-width: 860px) { grid-template-columns: 1fr; }
+
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 10px;
+  }
+
+  p, li {
+    font-size: 15px;
+    color: $site-text-dim;
+  }
+
+  ul { padding-left: 18px; margin: 10px 0 0; }
+  li { margin-bottom: 6px; }
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+}
+
+// code blocks
+.site-code {
+  background: #0d0f14;
+  border: 1px solid $site-border;
+  border-radius: 12px;
+  overflow: hidden;
+
+  figcaption {
+    padding: 8px 16px;
+    font-size: 12px;
+    color: $site-text-dim;
+    border-bottom: 1px solid $site-border;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+
+  pre {
+    margin: 0;
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.65;
+    color: #d7dce6;
+  }
+}
+
+// theme swatches
+.site-themes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.site-theme-chip {
+  // the ofc-theme-* class set alongside this one resolves the chart's CSS
+  // variables, so each chip is painted with its theme's real palette
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+
+  .site-theme-candles {
+    display: flex;
+    gap: 5px;
+    align-items: flex-end;
+    height: 40px;
+    margin-bottom: 10px;
+
+    i {
+      flex: 1;
+      border-radius: 2px;
+      &:nth-child(odd) { background: var(--green); }
+      &:nth-child(even) { background: var(--red); }
+      &:nth-child(1) { height: 55%; }
+      &:nth-child(2) { height: 80%; }
+      &:nth-child(3) { height: 40%; }
+      &:nth-child(4) { height: 95%; }
+      &:nth-child(5) { height: 65%; }
+    }
+  }
+
+  .site-theme-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+  }
+}
+
+// ---- footer ----
+
+.site-footer {
+  border-top: 1px solid $site-border;
+  padding: 36px 0 48px;
+  font-size: 14px;
+  color: $site-text-dim;
+
+  .site-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  nav { display: flex; gap: 20px; }
+}
+
+@media (max-width: 700px) {
+  .site-hero { padding-top: 56px; }
+  .site-demo-chart { height: 540px; }
+  .site-stats { gap: 28px; }
+  .site-nav-links a:not(:last-child) { display: none; }
+}
