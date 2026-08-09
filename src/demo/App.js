@@ -22,9 +22,11 @@ const THETA_DOCS_URL = 'https://gunnarpdx.github.io/thetascript/';
 
 // demo of the customStudies prop: a host-provided theta-script study that
 // shows up in the studies menu (with the plug icon) without living in the
-// user's script library
+// user's script library. Guarded: CI installs theta-script fresh, so a
+// release that renames an example must degrade the showcase, not blank the
+// whole site with a module-evaluation throw.
 const emaCross = EXAMPLES.find(e => e.name === 'EMA Cross Signals');
-const demoCustomStudies = [
+const demoCustomStudies = emaCross ? [
   {
     id: 'demo_ema_cross',
     name: 'EMA Cross Signals (provided)',
@@ -32,7 +34,7 @@ const demoCustomStudies = [
     info: emaCross.blurb,
     source: emaCross.source,
   },
-];
+] : [];
 
 // ?bench swaps in the synthetic feed for performance runs (no network)
 const bench = typeof window !== 'undefined'
@@ -62,9 +64,9 @@ const crossStrategy = EXAMPLES.find(e => e.name === 'Cross Strategy');
 const scriptShowcaseConfig = {
   persistence: false,
   default_script_editor_open: true,
-  scripts_default: [
-    { name: crossStrategy.name, source: crossStrategy.source, enabled: true },
-  ],
+  scripts_default: crossStrategy
+    ? [{ name: crossStrategy.name, source: crossStrategy.source, enabled: true }]
+    : [],
 };
 
 const QUICKSTART_CODE = `import { AdvancedChart } from 'open-financial-charts';
@@ -223,6 +225,21 @@ const CodeBlock = ({ caption, code }) => (
   </figure>
 );
 
+// browser-style panel chrome shared by every live chart on the page; the
+// watermark condition varies per panel, so callers pass it explicitly
+const DemoPanel = ({ caption, className, chartClassName, watermark, children }) => (
+  <div className={`site-demo-panel${className ? ` ${className}` : ''}`}>
+    <div className="site-demo-panel-bar">
+      <i /><i /><i />
+      <span>{caption}</span>
+    </div>
+    <div className={`site-demo-chart${chartClassName ? ` ${chartClassName}` : ''}`}>
+      {children}
+      {watermark && <div className="ofc-demo-watermark">Simulated data</div>}
+    </div>
+  </div>
+);
+
 function App() {
   return (
     <div className="site">
@@ -270,24 +287,13 @@ function App() {
 
       <section className="site-demo" id="demo">
         <div className="site-container">
-          <div className="site-demo-panel">
-            <div className="site-demo-panel-bar">
-              <i /><i /><i />
-              <span>
-                Live demo using simulated data
-              </span>
-            </div>
-            <div className="site-demo-chart">
-              <ChartContext dataFeed={feed} priceSocket={socket} customStudies={demoCustomStudies} config={demoConfig}>
-                <AdvancedChartWrapper>
-                  <Chart/>
-                </AdvancedChartWrapper>
-              </ChartContext>
-              {(usingSimulator || bench) && (
-                <div className="ofc-demo-watermark">Simulated data</div>
-              )}
-            </div>
-          </div>
+          <DemoPanel caption="Live demo using simulated data" watermark={usingSimulator || bench}>
+            <ChartContext dataFeed={feed} priceSocket={socket} customStudies={demoCustomStudies} config={demoConfig}>
+              <AdvancedChartWrapper>
+                <Chart/>
+              </AdvancedChartWrapper>
+            </ChartContext>
+          </DemoPanel>
           <p className="site-demo-hint">
             Scroll to zoom, drag to pan. Try the studies menu, the drawing toolbar on the
             left, the script editor in the bottom bar, and the theme picker under settings.
@@ -326,20 +332,14 @@ function App() {
               of them to edit inputs and colors, or open the studies menu to browse the
               rest of the catalog.
             </p>
-            <div className="site-demo-panel site-studies-panel">
-              <div className="site-demo-panel-bar">
-                <i /><i /><i />
-                <span>
-                  Bollinger Bands · VWAP · MACD · YesNo Oscillator 
-                </span>
-              </div>
-              <div className="site-demo-chart site-studies-chart">
-                <AdvancedChart dataFeed={feed} priceSocket={socket} config={studiesShowcaseConfig} />
-                {usingSimulator && (
-                  <div className="ofc-demo-watermark">Simulated data</div>
-                )}
-              </div>
-            </div>
+            <DemoPanel
+              caption="Bollinger Bands · VWAP · MACD · YesNo Oscillator"
+              className="site-studies-panel"
+              chartClassName="site-studies-chart"
+              watermark={usingSimulator}
+            >
+              <AdvancedChart dataFeed={feed} priceSocket={socket} config={studiesShowcaseConfig} />
+            </DemoPanel>
             <div className="site-docrow">
               <div>
                 <h3>Preset studies from config</h3>
@@ -494,21 +494,14 @@ function App() {
           </div>
           {!bench && (
             <>
-              <div className="site-demo-panel site-studies-panel">
-                <div className="site-demo-panel-bar">
-                  <i /><i /><i />
-                  <span>
-                    Cross Strategy — an EMA-cross trading strategy saved in the script
-                    library, running on the chart, editor open
-                  </span>
-                </div>
-                <div className="site-demo-chart site-script-chart">
-                  <AdvancedChart dataFeed={feed} priceSocket={socket} config={scriptShowcaseConfig} />
-                  {usingSimulator && (
-                    <div className="ofc-demo-watermark">Simulated data</div>
-                  )}
-                </div>
-              </div>
+              <DemoPanel
+                caption="Cross Strategy — an EMA-cross trading strategy saved in the script library, running on the chart, editor open"
+                className="site-studies-panel"
+                chartClassName="site-script-chart"
+                watermark={usingSimulator}
+              >
+                <AdvancedChart dataFeed={feed} priceSocket={socket} config={scriptShowcaseConfig} />
+              </DemoPanel>
               <div className="site-docrow">
                 <div>
                   <h3>Ship scripts with your app</h3>

@@ -1,7 +1,7 @@
 {
   "name": "open-financial-charts",
   "version": "0.1.0",
-  "homepage": ".",
+  "homepage": "https://gunnarpdx.github.io/OpenFinancialCharts/",
   "description": "Advanced financial chart React component with a pluggable data feed (candles, studies, drawings, scripting)",
   "license": "AGPL-3.0-only",
   "author": "Gunnar Rosenberg",

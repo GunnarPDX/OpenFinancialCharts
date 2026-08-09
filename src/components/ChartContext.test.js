@@ -366,6 +366,11 @@ describe('script config keys', () => {
       </span>
     );
   };
+  const ProbeIds = () => {
+    const { customScripts } = useChartProvider();
+    return <span data-testid="ids">{JSON.stringify(customScripts.map(s => s.id))}</span>;
+  };
+
 
   test('scripts_default seeds the library and default_script_editor_open opens the editor', () => {
     const { getByTestId } = render(
@@ -400,5 +405,33 @@ describe('script config keys', () => {
       scripts: [['Mine', false]],
       editorOpen: false,
     });
+  });
+
+  test('scripts_default: null renders an empty library instead of crashing', () => {
+    const { getByTestId } = render(
+      <ChartProvider dataFeed={makeFeed()} config={{ scripts_default: null }}>
+        <Probe />
+      </ChartProvider>
+    );
+    expect(JSON.parse(getByTestId('scripts').textContent)).toEqual({
+      scripts: [],
+      editorOpen: false,
+    });
+  });
+
+  test('colliding slug-derived ids are de-duped so each seed stays addressable', () => {
+    const { getByTestId } = render(
+      <ChartProvider dataFeed={makeFeed()} config={{
+        scripts_default: [
+          { name: 'SMA 10', source: 'study("a")' },
+          { name: 'SMA-10', source: 'study("b")' },
+        ],
+      }}>
+        <ProbeIds />
+      </ChartProvider>
+    );
+    const ids = JSON.parse(getByTestId('ids').textContent);
+    expect(new Set(ids).size).toBe(2);
+    expect(ids[0]).toBe('sma_10');
   });
 });

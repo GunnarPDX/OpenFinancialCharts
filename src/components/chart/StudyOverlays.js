@@ -82,7 +82,7 @@ const StudyOverlays = React.memo(({
                 style: pl.style,
                 lineStyle: pl.lineStyle,
                 color: lineColorOf(inst, { key: pl.key, color: pl.color }),
-                width: lineWidthOf(inst, pl.width || 2),
+                width: lineWidthOf(inst, pl.width || 1),
                 baseY: plotBottom,
                 barW: step * 0.6,
                 keyPrefix: pl.key,

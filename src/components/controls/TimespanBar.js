@@ -26,11 +26,15 @@ const Component = () => {
   // shortcut must not escape the host's allowed sizes
   const sizeAllowed = (cs) => !config.candle_sizes || config.candle_sizes.includes(cs);
   const spans = config.timeframes
-    ? config.timeframes.map(t => {
-        if (Array.isArray(t)) return t;
-        if (t && typeof t === 'object') return [t.timeframe, t.candleSize || DEFAULT_SIZES[t.timeframe]];
-        return [t, DEFAULT_SIZES[t]];
-      })
+    ? config.timeframes
+        .map(t => {
+          if (Array.isArray(t)) return t;
+          if (t && typeof t === 'object') return [t.timeframe, t.candleSize || DEFAULT_SIZES[t.timeframe]];
+          return [t, DEFAULT_SIZES[t]];
+        })
+        // drop malformed entries (e.g. an object missing `timeframe`): a
+        // blank button that fetches timeframe undefined helps no one
+        .filter(([tf]) => tf)
     : SPANS;
 
   return (

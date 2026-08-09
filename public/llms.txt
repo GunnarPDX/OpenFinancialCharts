@@ -1,6 +1,6 @@
 # open-financial-charts
 
-> Open-source (AGPL-3.0) advanced financial charting component for React. Candlesticks and 31 chart types, 117 technical studies, drawing tools, custom themes, live streaming ticks, and a built-in script editor — driven entirely by a data feed the host app provides, so it works with any market-data API.
+> Open-source (AGPL-3.0) advanced financial charting component for React. Candlesticks and 30+ chart types, 100+ technical studies, drawing tools, custom themes, live streaming ticks, and a built-in script editor — driven entirely by a data feed the host app provides, so it works with any market-data API.
 
 This site (https://gunnarpdx.github.io/OpenFinancialCharts/) is the project's live demo, running on simulated market data with no API key. The page includes feature highlights, quick-start and data-feed code examples, a studies showcase, and a scripting showcase.
 

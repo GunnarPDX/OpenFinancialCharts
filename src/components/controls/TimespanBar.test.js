@@ -54,3 +54,15 @@ test('a restricted candle_sizes list vetoes the auto-picked size', () => {
   // timeframe switches, but '1h' is outside candle_sizes so the size stays
   expect(getByTestId('probe').textContent).toBe('1Y|1d');
 });
+
+test('malformed object entries (no timeframe key) are dropped, valid ones survive', () => {
+  const { getByText, queryAllByRole } = render(
+    <ChartProvider dataFeed={makeFeed()} config={{
+      timeframes: [{ tf: '1M', candleSize: '10m' }, { timeframe: '1Y' }],
+    }}>
+      <TimespanBar />
+    </ChartProvider>
+  );
+  expect(getByText('1Y')).toBeTruthy();
+  expect(queryAllByRole('button')).toHaveLength(1);
+});

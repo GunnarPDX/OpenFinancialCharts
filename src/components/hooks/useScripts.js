@@ -19,9 +19,20 @@ const useScripts = ({ saved, storage, cfg, customStudies }) => {
   // view's active set against the current library (stale ids just no-op)
   const [customScripts, setCustomScripts] = React.useState(() => {
     // cfg.scripts_default seeds the library when nothing is persisted, same
-    // first-load rule as studies_default (so with persistence off: every mount)
-    const list = saved.customScripts
-      ?? cfg.scripts_default.map(sc => ({ enabled: false, ...sc, id: sc.id || slug(sc.name) }));
+    // first-load rule as studies_default (so with persistence off: every
+    // mount). Null-tolerant like the other list keys, and slug-derived ids
+    // are de-duped — colliding ids would make toggle/delete hit both records
+    const seed = () => {
+      const used = new Set();
+      return (cfg.scripts_default || []).map(sc => {
+        const base = sc.id || slug(sc.name);
+        let id = base;
+        for (let n = 2; used.has(id); n++) id = `${base}_${n}`;
+        used.add(id);
+        return { enabled: false, ...sc, id };
+      });
+    };
+    const list = saved.customScripts ?? seed();
     return Array.isArray(saved.enabledScripts)
       ? list.map(sc => ({ ...sc, enabled: saved.enabledScripts.includes(sc.id) }))
       : list;
