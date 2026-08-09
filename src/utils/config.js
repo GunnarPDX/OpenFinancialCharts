@@ -23,7 +23,7 @@ export const DEFAULT_CONFIG = {
   themes_hidden: [],            // theme names to remove from the settings menu
   line_types_hidden: [],        // line type / aggregated type values to hide
   candle_sizes: null,           // replace the candle-size list, e.g. ['1d', '1w']
-  timeframes: null,             // replace the timespan bar: ['1M', ...] or [['1M', '10m'], ...]
+  timeframes: null,             // replace the timespan bar: '1M' strings, ['1M', '10m'] pairs, or { timeframe, candleSize } objects
   draw_palette: null,           // replace the color picker preset grid
 
   // --- feature visibility ---

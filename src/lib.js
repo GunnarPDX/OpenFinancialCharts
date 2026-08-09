@@ -1,12 +1,18 @@
 // Public package entry. Everything a consuming app needs:
 //
-//   import { ChartProvider, AdvancedChartWrapper, Chart } from 'open-financial-charts';
+//   import { AdvancedChart } from 'open-financial-charts';
 //   import 'open-financial-charts/dist/styles.css';
+//
+//   <AdvancedChart dataFeed={myFeed} priceSocket={mySocket} />
+//
+// or, composed from the underlying pieces (chrome-less plots, host
+// components placed around the chart):
 //
 //   <ChartProvider dataFeed={myFeed} priceSocket={mySocket}>
 //     <AdvancedChartWrapper><Chart/></AdvancedChartWrapper>
 //   </ChartProvider>
 
+export { default as AdvancedChart } from './components/AdvancedChart';
 export { default as ChartProvider, useChartProvider, useQuotes } from './components/ChartContext';
 export { default as AdvancedChartWrapper } from './components/AdvancedChartWrapper';
 export { default as Chart } from './components/ChartSizeWrapper';

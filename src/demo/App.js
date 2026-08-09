@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ChartContext from '../components/ChartContext';
 import AdvancedChartWrapper from '../components/AdvancedChartWrapper';
 import Chart from '../components/ChartSizeWrapper';
+import AdvancedChart from '../components/AdvancedChart';
 import { BUILTIN_THEMES } from '../components/controls/themeVars';
 import { lineTypes, aggregatedTypes } from '../components/ChartMainLine';
 import { studies } from '../studies';
@@ -45,7 +46,17 @@ const socket = bench ? benchPriceSocket : defaultPriceSocket;
 // candle scrolled off-screen
 const demoConfig = !bench && usingSimulator ? { persistence: 'ofc-sim-state' } : undefined;
 
-const QUICKSTART_CODE = `import { ChartProvider, AdvancedChartWrapper, Chart } from 'open-financial-charts';
+// the studies showcase chart is fully stateless: persistence off means
+// studies_default (and every other default_*) re-applies on each reload, so
+// the section always opens with exactly these studies no matter what the
+// visitor did last time
+const STUDIES_SHOWCASE = ['bollinger_bands', 'vwap', 'macd', 'yesno_oscillator'];
+const studiesShowcaseConfig = {
+  persistence: false,
+  studies_default: STUDIES_SHOWCASE,
+};
+
+const QUICKSTART_CODE = `import { AdvancedChart } from 'open-financial-charts';
 import 'open-financial-charts/dist/styles.css';
 
 import { myDataFeed } from './myDataFeed';
@@ -53,11 +64,7 @@ import { myDataFeed } from './myDataFeed';
 function App() {
   return (
     <div style={{ height: 600 }}>
-      <ChartProvider dataFeed={myDataFeed}>
-        <AdvancedChartWrapper>
-          <Chart />
-        </AdvancedChartWrapper>
-      </ChartProvider>
+      <AdvancedChart dataFeed={myDataFeed} />
     </div>
   );
 }`;
@@ -98,6 +105,14 @@ const SOCKET_CODE = `export const myPriceSocket = {
     return () => ws.close();
   },
 };`;
+
+const STUDIES_CODE = `<AdvancedChart
+  dataFeed={myDataFeed}
+  config={{
+    persistence: false,   // stateless — defaults re-apply every mount
+    studies_default: ['bollinger_bands', 'vwap', 'macd', 'yesno_oscillator'],
+  }}
+/>`;
 
 const CONFIG_CODE = `<ChartProvider
   dataFeed={myDataFeed}
@@ -177,6 +192,7 @@ function App() {
           <div className="site-nav-links">
             <a href="#demo">Demo</a>
             <a href="#features">Features</a>
+            <a href="#studies">Studies</a>
             <a href="#quickstart">Quick start</a>
             <a href="#datafeed">Data feeds</a>
             <a href="#scripting">Scripting</a>
@@ -218,8 +234,7 @@ function App() {
             <div className="site-demo-panel-bar">
               <i /><i /><i />
               <span>
-                Live demo — replayed sample data with a simulated tick stream, so every
-                feature works without an API key
+                Live demo using simulated data
               </span>
             </div>
             <div className="site-demo-chart">
@@ -260,17 +275,60 @@ function App() {
         </div>
       </section>
 
+      {!bench && (
+        <section className="site-section" id="studies">
+          <div className="site-container">
+            <div className="site-section-kicker">Studies</div>
+            <h2>{studies.length} technical studies, ready to go</h2>
+            <p>
+              This chart mounts with Bollinger Bands and VWAP overlaid on the price,
+              plus MACD and the YesNo Oscillator in their own panes — right-click any
+              of them to edit inputs and colors, or open the studies menu to browse the
+              rest of the catalog.
+            </p>
+            <div className="site-demo-panel site-studies-panel">
+              <div className="site-demo-panel-bar">
+                <i /><i /><i />
+                <span>
+                  Bollinger Bands · VWAP · MACD · YesNo Oscillator 
+                </span>
+              </div>
+              <div className="site-demo-chart site-studies-chart">
+                <AdvancedChart dataFeed={feed} priceSocket={socket} config={studiesShowcaseConfig} />
+                {usingSimulator && (
+                  <div className="ofc-demo-watermark">Simulated data</div>
+                )}
+              </div>
+            </div>
+            <div className="site-docrow">
+              <div>
+                <h3>Preset studies from config</h3>
+                <p>
+                  <code>studies_default</code> pre-adds studies whenever nothing is
+                  persisted, and <code>persistence: false</code> keeps the chart stateless
+                  so that's every mount — the recipe for kiosk views and marketing pages
+                  like this one. With persistence on, it instead seeds a first-time
+                  user's chart and never overrides their choices afterwards.
+                </p>
+              </div>
+              <CodeBlock caption="Preset studies" code={STUDIES_CODE} />
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="site-section" id="quickstart">
         <div className="site-container">
           <div className="site-section-kicker">Documentation</div>
           <h2>Quick start</h2>
           <div className="site-docrow">
             <div>
-              <h3>Three components, one stylesheet</h3>
+              <h3>One component, one stylesheet</h3>
               <p>
-                <code>ChartProvider</code> holds all chart state, <code>AdvancedChartWrapper</code> adds
-                the control bar, drawing toolbar, and script editor, and <code>Chart</code> is
-                the plot surface itself.
+                <code>AdvancedChart</code> renders the whole stack — state provider, control
+                bar, toolbars, script editor, and the plot. The underlying pieces
+                (<code>ChartProvider</code>, <code>AdvancedChartWrapper</code>, <code>Chart</code>) are exported
+                too, for chrome-less plots or custom layouts around the chart.
               </p>
               <ul>
                 <li>The chart fills its parent — give the wrapping element a height.</li>

@@ -27,7 +27,7 @@ them.
 ## Quick start
 
 ```jsx
-import { ChartProvider, AdvancedChartWrapper, Chart } from 'open-financial-charts';
+import { AdvancedChart } from 'open-financial-charts';
 import 'open-financial-charts/dist/styles.css';
 
 import { myDataFeed } from './myDataFeed';
@@ -35,11 +35,7 @@ import { myDataFeed } from './myDataFeed';
 function App() {
   return (
     <div style={{ height: 600 }}>
-      <ChartProvider dataFeed={myDataFeed}>
-        <AdvancedChartWrapper>
-          <Chart />
-        </AdvancedChartWrapper>
-      </ChartProvider>
+      <AdvancedChart dataFeed={myDataFeed} />
     </div>
   );
 }
@@ -48,6 +44,22 @@ function App() {
 The chart fills its parent, so give the wrapping element a height.
 
 Don't forget the stylesheet import — without it the chart renders unstyled.
+
+### Composing the pieces
+
+`AdvancedChart` is sugar for the three underlying components:
+
+```jsx
+<ChartProvider dataFeed={myDataFeed}>   {/* all AdvancedChart props land here */}
+  <AdvancedChartWrapper>                {/* control bar, toolbars, script editor */}
+    <Chart />                           {/* the plot surface */}
+  </AdvancedChartWrapper>
+</ChartProvider>
+```
+
+Compose the pieces directly when you need more than the default arrangement —
+a chrome-less plot (`ChartProvider` + `Chart`, no wrapper) or your own
+components mounted inside the provider alongside the chart.
 
 ## Writing a data feed
 
@@ -164,11 +176,7 @@ export const myPriceSocket = {
 ```
 
 ```jsx
-<ChartProvider dataFeed={myDataFeed} priceSocket={myPriceSocket}>
-  <AdvancedChartWrapper>
-    <Chart />
-  </AdvancedChartWrapper>
-</ChartProvider>
+<AdvancedChart dataFeed={myDataFeed} priceSocket={myPriceSocket} />
 ```
 
 Ticks may arrive at any rate — the chart batches them internally (≤4
@@ -180,6 +188,7 @@ re-renders/sec).
 
 | Export | Role |
 |---|---|
+| `AdvancedChart` | The three components below composed into one. Props pass through to `ChartProvider`. |
 | `ChartProvider` | Context provider holding all chart state. Props below. Must wrap the others. |
 | `AdvancedChartWrapper` | Full chrome: control bar, drawing toolbar, script editor, timespan bar. |
 | `Chart` | The chart surface itself; sizes to its parent. |
@@ -194,10 +203,14 @@ re-renders/sec).
 | `config` | `object` | Optional structured settings — see [Configuration](#configuration). |
 | `customStudies` | `array` | Optional host-provided theta-script studies, listed in the studies menu — see [Providing studies](#providing-studies-customstudies). |
 
-### Hook
+### Hooks
 
-`useChartProvider()` — access/drive chart state from your own components
-inside `ChartProvider` (e.g. `const { symbol, setSymbol, quotes } = useChartProvider()`).
+For your own components inside `ChartProvider`:
+
+- `useChartProvider()` — access/drive chart state
+  (e.g. `const { symbol, setSymbol } = useChartProvider()`)
+- `useQuotes()` — the loaded bars and feed status
+  (`const { quotes, feedLoading, feedError } = useQuotes()`)
 
 ### Helpers
 
@@ -263,7 +276,7 @@ They never override a choice the user already made and saved.
 | `themes_hidden` | `[]` | Theme names removed from the settings menu. |
 | `line_types_hidden` | `[]` | Line type values removed from the line-type menu. |
 | `candle_sizes` | built-ins | Replace the candle-size list, e.g. `['1d', '1w']` for a daily-only feed. With no explicit `default_candle_size`, the first entry becomes the default; persisted sizes outside the list are clamped to it, and timespan-bar shortcuts never auto-pick a size outside it. |
-| `timeframes` | built-ins | Replace the timespan bar. Entries are `'1M'` strings or `['1M', '10m']` pairs (timeframe + the candle size it selects). |
+| `timeframes` | built-ins | Replace the timespan bar. Each entry sets a timeframe and (optionally) the candle size selecting it switches to: `{ timeframe: '1M', candleSize: '10m' }` objects, `['1M', '10m']` pairs, or bare `'1M'` strings (built-in default size when known). |
 | `draw_palette` | built-ins | Replace the color picker's preset grid (array of CSS colors). |
 
 ### Feature visibility

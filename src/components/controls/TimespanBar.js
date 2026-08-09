@@ -19,13 +19,18 @@ const DEFAULT_SIZES = Object.fromEntries(SPANS);
 
 const Component = () => {
   const { timeframe, setTimeframe, setCandleSize, config } = useChartProvider();
-  // config.timeframes accepts ['1M', ...] or [['1M', '10m'], ...]; bare
-  // timeframe strings fall back to the built-in candle size when known.
+  // config.timeframes entries: '1M' strings, ['1M', '10m'] pairs, or
+  // { timeframe: '1M', candleSize: '10m' } objects; entries without a candle
+  // size fall back to the built-in default when known.
   // A restricted candle_sizes list also vetoes the auto-picked size — the
   // shortcut must not escape the host's allowed sizes
   const sizeAllowed = (cs) => !config.candle_sizes || config.candle_sizes.includes(cs);
   const spans = config.timeframes
-    ? config.timeframes.map(t => (Array.isArray(t) ? t : [t, DEFAULT_SIZES[t]]))
+    ? config.timeframes.map(t => {
+        if (Array.isArray(t)) return t;
+        if (t && typeof t === 'object') return [t.timeframe, t.candleSize || DEFAULT_SIZES[t.timeframe]];
+        return [t, DEFAULT_SIZES[t]];
+      })
     : SPANS;
 
   return (
