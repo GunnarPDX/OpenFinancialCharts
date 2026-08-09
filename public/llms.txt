@@ -1,0 +1,23 @@
+# open-financial-charts
+
+> Open-source (AGPL-3.0) advanced financial charting component for React. Candlesticks and 31 chart types, 117 technical studies, drawing tools, custom themes, live streaming ticks, and a built-in script editor — driven entirely by a data feed the host app provides, so it works with any market-data API.
+
+This site (https://gunnarpdx.github.io/OpenFinancialCharts/) is the project's live demo, running on simulated market data with no API key. The page includes feature highlights, quick-start and data-feed code examples, a studies showcase, and a scripting showcase.
+
+Key facts:
+- Install: `npm install open-financial-charts` (peer deps: react >= 17, react-dom >= 17)
+- Main component: `AdvancedChart` (or compose `ChartProvider` + `AdvancedChartWrapper` + `Chart`)
+- Data contract: implement `{ name, fetchOHLC({ ticker, candleSize, timeframe, endDate }) => Promise<Bar[]> }` where Bar is `{ date, open, high, low, close, volume }`; optional `PriceSocket` interface for live ticks
+- Configuration: a single `config` prop controls themes, visible features, candle sizes, timeframes, preset studies (`studies_default`), preset scripts (`scripts_default`), persistence, and callbacks
+- Scripting: user studies and trade strategies are written in theta-script, a small per-bar language with a wasm interpreter and conformance-tested backend runtimes
+
+## Docs
+
+- [README / full documentation](https://github.com/GunnarPDX/OpenFinancialCharts#readme): installation, DataFeed and PriceSocket interfaces, complete configuration reference, theming, scripting
+- [theta-script language docs](https://gunnarpdx.github.io/thetascript/): language reference, examples, spec
+
+## Links
+
+- [GitHub repository](https://github.com/GunnarPDX/OpenFinancialCharts)
+- [npm package](https://www.npmjs.com/package/open-financial-charts)
+- [License (AGPL-3.0)](https://github.com/GunnarPDX/OpenFinancialCharts/blob/main/LICENSE)

@@ -10,6 +10,12 @@ $site-text-dim: #9aa1b2;
 $site-accent-1: #22d3ee;
 $site-accent-2: #34d399;
 
+// kill the browser's default body margin — it shows as a gap above the
+// sticky navbar (demo-only stylesheet, so a bare body selector is fine)
+body {
+  margin: 0;
+}
+
 .site {
   min-height: 100vh;
   background:
@@ -345,6 +351,37 @@ a.site-btn-ghost {
   }
 }
 
+// small recommendation callout under a section heading
+.site-reco-card {
+  max-width: 680px;
+  margin-top: 20px;
+  padding: 14px 20px;
+  background: $site-panel;
+  border: 1px solid $site-border;
+  border-left: 3px solid $site-accent-2;
+  border-radius: 10px;
+
+  .site-reco-kicker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: $site-accent-2;
+    margin-bottom: 6px;
+  }
+
+  p {
+    margin: 0;
+    font-size: 14.5px;
+    color: $site-text-dim;
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em;
+  }
+}
+
 // docs rows: prose beside a code block
 .site-docrow {
   display: grid;
@@ -445,6 +482,32 @@ a.site-btn-ghost {
     font-weight: 600;
     color: var(--text);
   }
+}
+
+// branded link to the theta-script site (logo replicated inline in App.js)
+a.site-theta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 10px 18px;
+  border: 1px solid $site-border;
+  border-radius: 10px;
+  background: $site-panel;
+  color: $site-text;
+  font-size: 14px;
+  font-weight: 600;
+  transition: border-color 0.15s, background 0.15s;
+
+  &:hover {
+    text-decoration: none;
+    border-color: rgba(167, 139, 250, 0.45);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  svg { flex: none; }
+
+  .site-theta-link-arrow { color: $site-text-dim; }
 }
 
 // ---- footer ----

@@ -182,6 +182,24 @@ const FEATURES = [
   },
 ];
 
+// the theta-script brand mark, replicated from the docs site
+// (https://gunnarpdx.github.io/thetascript/): a slanted theta stroked with
+// the cyan-to-violet gradient
+const ThetaLogo = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
+    <defs>
+      <linearGradient id="ofcThetaGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stopColor="#22d3ee" />
+        <stop offset="1" stopColor="#a78bfa" />
+      </linearGradient>
+    </defs>
+    <g transform="translate(2.1 0) skewX(-7.5)" fill="none" stroke="url(#ofcThetaGrad)" strokeWidth="3.2" strokeLinecap="round">
+      <ellipse cx="15" cy="16" rx="8.8" ry="12.4" />
+      <path d="M6.6 16h16.8" />
+    </g>
+  </svg>
+);
+
 const CopyButton = ({ text }) => {
   const [copied, setCopied] = useState(false);
   return (
@@ -367,6 +385,20 @@ function App() {
         <div className="site-container">
           <div className="site-section-kicker">Documentation</div>
           <h2>Bring your own data feed</h2>
+          <div className="site-reco-card">
+            <div className="site-reco-kicker">Recommended provider</div>
+            <p>
+              Need market data? We recommend the{' '}
+              <a href="https://unusualwhales.com">Unusual Whales</a>{' '}
+              <a href="https://api.unusualwhales.com/docs">API</a> — this demo's own
+              reference feed (historical OHLC + live tick socket) is written against
+              it, so{' '}
+              <a href={`${GITHUB_URL}/tree/main/src/demo/data_feed`}>
+                <code>src/demo/data_feed/</code>
+              </a>{' '}
+              is a working implementation you can copy into your app.
+            </p>
+          </div>
           <div className="site-docrow">
             <div>
               <h3>One method: fetchOHLC</h3>
@@ -452,6 +484,11 @@ function App() {
                 <li>Saved scripts appear in the studies menu and persist with chart state.</li>
                 <li>Conformance-tested backend runtimes let the same scripts run server-side for screening and alerting.</li>
               </ul>
+              <a className="site-theta-link" href={THETA_DOCS_URL}>
+                <ThetaLogo size={22} />
+                <span>theta-script — language docs &amp; reference</span>
+                <span className="site-theta-link-arrow">→</span>
+              </a>
             </div>
             <CodeBlock caption="theta-script" code={SCRIPT_CODE} />
           </div>
