@@ -15,6 +15,7 @@ export const DEFAULT_CONFIG = {
   default_extended_hours: true,
   default_log_scale: false,
   default_draw_color: '#3b82f6',
+  default_script_editor_open: false,  // start with the script editor panel open
   // extra CSS custom properties applied to the chart wrapper,
   // e.g. { '--green': '#00c076', '--red': '#ff3b46' }
   css_vars: null,
@@ -46,6 +47,8 @@ export const DEFAULT_CONFIG = {
   studies_hidden: [],           // study ids to hide from the menu and the chart
   studies_default: [],          // study ids pre-added when nothing is persisted
   favorite_studies_default: [],
+  scripts_default: [],          // { id?, name, source, enabled? } records seeding the
+                                // user's script library when nothing is persisted
   draw_tools_hidden: [],        // draw tool ids to hide from the toolbar
   max_active_studies: null,     // cap on concurrently active studies
 

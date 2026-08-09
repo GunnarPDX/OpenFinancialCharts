@@ -367,7 +367,7 @@ const ChartProvider = ({ children, dataFeed, priceSocket, ticker, config, custom
     customScripts, saveScript, deleteScript, toggleScript,
     providedStudies, providedState,
   } = useScripts({ saved, storage, cfg, customStudies });
-  const [showScriptEditorState, setShowScriptEditor] = React.useState(false);
+  const [showScriptEditorState, setShowScriptEditor] = React.useState(!!cfg.default_script_editor_open);
   const showScriptEditor = cfg.show_script_editor && showScriptEditorState;
   // set by menus to open the editor on a specific script; the editor consumes
   // (clears) it after selecting

@@ -353,3 +353,52 @@ describe('config prop', () => {
     expect(JSON.parse(getByTestId('drawn').textContent)).toEqual(['level']);
   });
 });
+
+describe('script config keys', () => {
+  const Probe = () => {
+    const { customScripts, showScriptEditor } = useChartProvider();
+    return (
+      <span data-testid="scripts">
+        {JSON.stringify({
+          scripts: customScripts.map(s => [s.name, s.enabled]),
+          editorOpen: showScriptEditor,
+        })}
+      </span>
+    );
+  };
+
+  test('scripts_default seeds the library and default_script_editor_open opens the editor', () => {
+    const { getByTestId } = render(
+      <ChartProvider dataFeed={makeFeed()} config={{
+        scripts_default: [
+          { name: 'Cross Strategy', source: 'study("x")', enabled: true },
+          { name: 'Draft', source: 'study("y")' },
+        ],
+        default_script_editor_open: true,
+      }}>
+        <Probe />
+      </ChartProvider>
+    );
+    expect(JSON.parse(getByTestId('scripts').textContent)).toEqual({
+      scripts: [['Cross Strategy', true], ['Draft', false]],
+      editorOpen: true,
+    });
+  });
+
+  test('scripts_default never overrides a persisted script library', () => {
+    localStorage.setItem('ofc-chart-state', JSON.stringify({
+      customScripts: [{ id: 'mine', name: 'Mine', source: 'study("m")', enabled: false }],
+    }));
+    const { getByTestId } = render(
+      <ChartProvider dataFeed={makeFeed()} config={{
+        scripts_default: [{ name: 'Seeded', source: 'study("s")', enabled: true }],
+      }}>
+        <Probe />
+      </ChartProvider>
+    );
+    expect(JSON.parse(getByTestId('scripts').textContent)).toEqual({
+      scripts: [['Mine', false]],
+      editorOpen: false,
+    });
+  });
+});

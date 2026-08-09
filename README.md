@@ -267,6 +267,7 @@ They never override a choice the user already made and saved.
 | `default_extended_hours` | `true` | Show pre/post-market bars initially. |
 | `default_log_scale` | `false` | Start with a logarithmic y-axis. |
 | `default_draw_color` | `'#3b82f6'` | Initial drawing color. |
+| `default_script_editor_open` | `false` | Start with the script editor panel open (requires `show_script_editor`). |
 | `css_vars` | `null` | Extra CSS custom properties applied to the chart wrapper, e.g. `{'--green': '#00c076', '--red': '#ff3b46'}` — see `src/styles/vars.css` for the available variables. |
 
 ### Option lists
@@ -307,6 +308,7 @@ All default to `true`.
 | `studies_hidden` | `[]` | Study ids hidden from the menu and dropped from the chart (even if persisted). The full catalog is exported as `studies` (`studies.map(s => s.id)`). |
 | `studies_default` | `[]` | Study ids pre-added the first time the chart loads (ignored once anything is persisted). |
 | `favorite_studies_default` | `[]` | Initial favorites (same first-load rule). |
+| `scripts_default` | `[]` | Theta-script records seeding the user's script library (same first-load rule): `{ name, source, enabled?, id? }`. Unlike `customStudies`, these are ordinary user scripts — editable and deletable. Pass `enabled: true` to start one on the chart. |
 | `draw_tools_hidden` | `[]` | Draw tool ids removed from the toolbar; emptied groups disappear. |
 | `max_active_studies` | `null` | Cap on concurrently active studies; adds beyond it are ignored. |
 

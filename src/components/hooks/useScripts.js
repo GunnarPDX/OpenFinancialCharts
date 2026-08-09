@@ -18,7 +18,10 @@ const useScripts = ({ saved, storage, cfg, customStudies }) => {
   // enabledScripts is a one-shot handoff from view loading: it re-applies the
   // view's active set against the current library (stale ids just no-op)
   const [customScripts, setCustomScripts] = React.useState(() => {
-    const list = saved.customScripts ?? [];
+    // cfg.scripts_default seeds the library when nothing is persisted, same
+    // first-load rule as studies_default (so with persistence off: every mount)
+    const list = saved.customScripts
+      ?? cfg.scripts_default.map(sc => ({ enabled: false, ...sc, id: sc.id || slug(sc.name) }));
     return Array.isArray(saved.enabledScripts)
       ? list.map(sc => ({ ...sc, enabled: saved.enabledScripts.includes(sc.id) }))
       : list;

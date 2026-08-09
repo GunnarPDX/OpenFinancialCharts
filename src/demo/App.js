@@ -56,6 +56,17 @@ const studiesShowcaseConfig = {
   studies_default: STUDIES_SHOWCASE,
 };
 
+// scripting showcase: the Cross Strategy example saved into the (stateless)
+// script library, running on the chart, with the editor open on it
+const crossStrategy = EXAMPLES.find(e => e.name === 'Cross Strategy');
+const scriptShowcaseConfig = {
+  persistence: false,
+  default_script_editor_open: true,
+  scripts_default: [
+    { name: crossStrategy.name, source: crossStrategy.source, enabled: true },
+  ],
+};
+
 const QUICKSTART_CODE = `import { AdvancedChart } from 'open-financial-charts';
 import 'open-financial-charts/dist/styles.css';
 
@@ -111,6 +122,17 @@ const STUDIES_CODE = `<AdvancedChart
   config={{
     persistence: false,   // stateless — defaults re-apply every mount
     studies_default: ['bollinger_bands', 'vwap', 'macd', 'yesno_oscillator'],
+  }}
+/>`;
+
+const SCRIPT_PRESET_CODE = `<AdvancedChart
+  dataFeed={myDataFeed}
+  config={{
+    persistence: false,
+    default_script_editor_open: true,
+    scripts_default: [
+      { name: 'Cross Strategy', source: crossStrategySource, enabled: true },
+    ],
   }}
 />`;
 
@@ -433,6 +455,40 @@ function App() {
             </div>
             <CodeBlock caption="theta-script" code={SCRIPT_CODE} />
           </div>
+          {!bench && (
+            <>
+              <div className="site-demo-panel site-studies-panel">
+                <div className="site-demo-panel-bar">
+                  <i /><i /><i />
+                  <span>
+                    Cross Strategy — an EMA-cross trading strategy saved in the script
+                    library, running on the chart, editor open
+                  </span>
+                </div>
+                <div className="site-demo-chart site-script-chart">
+                  <AdvancedChart dataFeed={feed} priceSocket={socket} config={scriptShowcaseConfig} />
+                  {usingSimulator && (
+                    <div className="ofc-demo-watermark">Simulated data</div>
+                  )}
+                </div>
+              </div>
+              <div className="site-docrow">
+                <div>
+                  <h3>Ship scripts with your app</h3>
+                  <p>
+                    <code>scripts_default</code> seeds the user's script library
+                    (first-load rule, so with <code>persistence: false</code> that's every
+                    mount) with ordinary user scripts they can edit, rename, or delete —
+                    here the trailing-stop strategy above, active on the chart with its
+                    trade markers and P&L panels. <code>default_script_editor_open</code>{' '}
+                    starts the editor open on it. For read-only studies with
+                    host-controlled source, use <code>customStudies</code> instead.
+                  </p>
+                </div>
+                <CodeBlock caption="Preset scripts" code={SCRIPT_PRESET_CODE} />
+              </div>
+            </>
+          )}
         </div>
       </section>
 
