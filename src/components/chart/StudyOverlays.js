@@ -184,7 +184,7 @@ const StudyOverlays = React.memo(({
                     key={`${l.key}-${si}`}
                     fill="none"
                     stroke={lineColorOf(inst, l)}
-                    strokeWidth={lineWidthOf(inst, l.width || 2)}
+                    strokeWidth={lineWidthOf(inst, l.width || 1)}
                     strokeLinejoin="round"
                     strokeLinecap="round"
                     points={segAttr(seg)}
@@ -211,7 +211,7 @@ const StudyOverlays = React.memo(({
         }
         if (def.segmented) {
           return (
-            <g key={inst.key} fill="none" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+            <g key={inst.key} fill="none" strokeWidth={lineWidthOf(inst, 1)} strokeLinecap="round" strokeLinejoin="round">
               {inWindow.map((pt, i) => {
                 const next = inWindow[i + 1];
                 if (!next || next.rank !== pt.rank + 1) return null;
@@ -236,7 +236,7 @@ const StudyOverlays = React.memo(({
             <polyline
               fill="none"
               stroke={lineColorOf(inst, null)}
-              strokeWidth={lineWidthOf(inst, 2)}
+              strokeWidth={lineWidthOf(inst, 1)}
               strokeLinejoin="round"
               strokeLinecap="round"
               points={studyPointsAttr(points, { drawLo, drawHi, xScale, yScale, w0, step })}

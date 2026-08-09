@@ -99,7 +99,7 @@ const ChartAxes = React.memo(({
                 y1={y}
                 y2={y}
                 stroke={lineColorOf(inst, l)}
-                strokeWidth={lineWidthOf(inst, l.width || 2)}
+                strokeWidth={lineWidthOf(inst, l.width || 1)}
               />
               <AxisTag x={xMax + 2} y={y} width={marginRight - 4} color={lineColorOf(inst, l)}
                 label={formatPrice(pt.value)} />

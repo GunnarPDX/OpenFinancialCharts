@@ -34,6 +34,10 @@ export const statisticalStudies = [
     color: '#f43f5e',
     renderAs: 'pane',
     paneStyle: 'line',
+    // pin 0 into the pane domain: without it the auto-fit domain hugs the
+    // curve and the pane reads as a floating copy of the price line — the
+    // underwater curve only makes sense anchored to its 0 (at-peak) line
+    paneRef: 0,
     fields: ['color'],
     params: { height: 70 },
     info: 'The underwater curve: percent decline from the highest close seen so far, 0 at fresh highs. Depth shows how far price fell from its peak, width how long it stayed down — the pain a buy-and-hold position actually sat through. Ulcer Index condenses this curve into a single number.',

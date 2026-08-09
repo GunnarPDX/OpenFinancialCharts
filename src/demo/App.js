@@ -388,15 +388,15 @@ function App() {
           <div className="site-reco-card">
             <div className="site-reco-kicker">Recommended provider</div>
             <p>
-              Need market data? We recommend the{' '}
+              Need market data? I highly recommend the{' '}
               <a href="https://unusualwhales.com">Unusual Whales</a>{' '}
               <a href="https://api.unusualwhales.com/docs">API</a> — this demo's own
               reference feed (historical OHLC + live tick socket) is written against
-              it, so{' '}
+              it, so the{' '}
               <a href={`${GITHUB_URL}/tree/main/src/demo/data_feed`}>
                 <code>src/demo/data_feed/</code>
               </a>{' '}
-              is a working implementation you can copy into your app.
+              folder is working implementation you can copy into your app, just set the ofc-uw-token in your .env file for <strong>local</strong> projects or <strong>proxy the api through your backend for live projects</strong>.
             </p>
           </div>
           <div className="site-docrow">
@@ -486,7 +486,7 @@ function App() {
               </ul>
               <a className="site-theta-link" href={THETA_DOCS_URL}>
                 <ThetaLogo size={22} />
-                <span>theta-script — language docs &amp; reference</span>
+                <span>ThetaScript — language docs &amp; reference</span>
                 <span className="site-theta-link-arrow">→</span>
               </a>
             </div>
