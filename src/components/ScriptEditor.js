@@ -5,6 +5,8 @@ import { DEFAULT_SCRIPT } from 'theta-script/examples';
 import ColorPop from './controls/ColorPop';
 import ScriptDocs from './ScriptDocs';
 import highlightSource from './highlightSource';
+import { SCRIPT_THEMES, themePreview } from './scriptThemes';
+import { SettingsIcon } from './icons';
 import useClickOutside from '../utils/useClickOutside';
 import startWindowDrag from './chart/startWindowDrag';
 
@@ -46,6 +48,18 @@ const Component = () => {
   const [confirmDelete, setConfirmDelete] = React.useState(false);
   const delWrapRef = React.useRef(null);
   useClickOutside(delWrapRef, () => setConfirmDelete(false), confirmDelete);
+  // syntax color theme: --ofc-syn-* vars on the editor root; persists like
+  // the editor height
+  const [synThemeId, setSynThemeId] = React.useState(() => storage.loadState().scriptSyntaxTheme ?? 'classic');
+  const synTheme = SCRIPT_THEMES.find(t => t.id === synThemeId) || SCRIPT_THEMES[0];
+  const [themePopOpen, setThemePopOpen] = React.useState(false);
+  const themeWrapRef = React.useRef(null);
+  useClickOutside(themeWrapRef, () => setThemePopOpen(false), themePopOpen);
+  // auto-save: dirty edits to an already-saved script persist after a short
+  // typing pause (through save(), so a script error still blocks persisting
+  // and shows in the toolbar). New unsaved drafts always need an explicit
+  // Save — auto-creating library records mid-thought would be noise
+  const [autoSave, setAutoSave] = React.useState(() => storage.loadState().scriptAutoSave ?? true);
   // inline hex-color editing: { start, end, value, x, y }
   const [colorEdit, setColorEdit] = React.useState(null);
   // the live splice range for the popup — advanced synchronously in
@@ -166,8 +180,18 @@ const Component = () => {
     loadedRef.current = { id, name: nm, source };
   };
 
+  // debounced auto-save of dirty edits; the ref keeps the timeout callback on
+  // the current closure without restarting the timer per render
+  const saveRef = React.useRef(save);
+  saveRef.current = save;
+  React.useEffect(() => {
+    if (!autoSave || !selected || !dirty || !engineReady) return undefined;
+    const t = setTimeout(() => saveRef.current(), 1200);
+    return () => clearTimeout(t);
+  }, [autoSave, selected, dirty, source, name, engineReady]);
+
   return (
-    <div className="ofc-script-editor" style={{ height: editorH }}>
+    <div className="ofc-script-editor" style={{ height: editorH, ...synTheme.vars }}>
       <div className="ofc-script-editor-grip" onMouseDown={startResize} />
       <div className="ofc-script-list">
         <button className="ofc-button ofc-script-new" onClick={() => select(null)}>+ New Script</button>
@@ -246,6 +270,50 @@ const Component = () => {
                   saved{selected.enabled ? ' · on chart' : ''}
                 </span>
               ))}
+          <span className="ofc-script-settings-wrap" ref={themeWrapRef}>
+            <button
+              className="ofc-button ofc-script-settings"
+              title="Syntax colors"
+              onClick={() => setThemePopOpen(o => !o)}
+            >
+              <SettingsIcon width="14px" height="14px" />
+            </button>
+            {themePopOpen && (
+              <div className="ofc-script-theme-pop">
+                <label className="ofc-script-settings-row">
+                  <span>Auto-save</span>
+                  <input
+                    className="ofc-switch"
+                    type="checkbox"
+                    checked={autoSave}
+                    onChange={() => {
+                      setAutoSave(v => {
+                        storage.saveState({ scriptAutoSave: !v });
+                        return !v;
+                      });
+                    }}
+                  />
+                </label>
+                <div className="ofc-script-settings-divider" />
+                <div className="ofc-script-theme-title">Syntax colors</div>
+                {SCRIPT_THEMES.map(t => (
+                  <button
+                    key={t.id}
+                    className={`ofc-script-theme-item${t.id === synTheme.id ? ' ofc-active' : ''}`}
+                    onClick={() => {
+                      setSynThemeId(t.id);
+                      storage.saveState({ scriptSyntaxTheme: t.id });
+                    }}
+                  >
+                    <span>{t.name}</span>
+                    <span className="ofc-script-theme-swatches">
+                      {themePreview(t).map((c, i) => <i key={i} style={{ background: c }} />)}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </span>
         </div>
         {docsTab && (
           <ScriptDocs
