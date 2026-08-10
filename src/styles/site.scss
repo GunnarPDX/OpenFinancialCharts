@@ -439,6 +439,22 @@ a.site-btn-ghost {
     line-height: 1.65;
     color: #d7dce6;
   }
+
+  // subtle, desaturated syntax tints over the base code color.
+  // site-tok-* come from the demo's JS tokenizer; ofc-tok-* from the chart's
+  // theta-script highlighter (restyled here — the editor keeps its own palette)
+  .site-tok-com { color: #69748c; font-style: italic; }
+  .site-tok-str { color: #93cfad; }
+  .site-tok-num { color: #ddb377; }
+  .site-tok-kw { color: #a9a1e8; }
+  .site-tok-cmp { color: #86c3e3; }
+  .ofc-tok-comment { color: #69748c; font-style: italic; }
+  .ofc-tok-string { color: #93cfad; }
+  .ofc-tok-number { color: #ddb377; }
+  .ofc-tok-draw { color: #86a8e8; font-weight: 600; }
+  .ofc-tok-keyword { color: #d795bd; }
+  .ofc-tok-source { color: #a9a1e8; }
+  .ofc-tok-builtin { color: #86c3e3; }
 }
 
 // theme swatches

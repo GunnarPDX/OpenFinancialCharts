@@ -9,6 +9,7 @@ import { studies } from '../studies';
 import { defaultDataFeed, defaultPriceSocket, usingSimulator } from './data_feed';
 import { benchDataFeed, benchPriceSocket } from './data_feed/benchFeed';
 import { EXAMPLES } from 'theta-script/examples';
+import highlightSource from '../components/highlightSource';
 
 import '../styles/base-colors.css';
 import '../styles/vars.css';
@@ -218,10 +219,46 @@ const CopyButton = ({ text }) => {
   );
 };
 
-const CodeBlock = ({ caption, code }) => (
+// minimal JS/JSX tokenizer for the doc snippets — comments, strings,
+// numbers, keywords, and Capitalized names (components/classes). Anything
+// else stays the base code color, which keeps the effect subtle.
+const JS_KEYWORDS = new Set([
+  'import', 'from', 'export', 'const', 'let', 'var', 'function', 'return',
+  'async', 'await', 'new', 'if', 'else', 'throw', 'default', 'true', 'false',
+  'null', 'undefined',
+]);
+const JS_HL_RE = /(\/\/[^\n]*)|("(?:[^"\\\n]|\\.)*"?|'(?:[^'\\\n]|\\.)*'?|`(?:[^`\\]|\\.)*`?)|(\b\d+(?:\.\d+)?\b)|([A-Za-z_$][A-Za-z0-9_$]*)/g;
+const highlightJs = (source) => {
+  const parts = [];
+  let last = 0, m, k = 0;
+  JS_HL_RE.lastIndex = 0;
+  while ((m = JS_HL_RE.exec(source))) {
+    if (m.index > last) parts.push(source.slice(last, m.index));
+    const tok = m[0];
+    if (m[1] != null) parts.push(<span key={k++} className="site-tok-com">{tok}</span>);
+    else if (m[2] != null) parts.push(<span key={k++} className="site-tok-str">{tok}</span>);
+    else if (m[3] != null) parts.push(<span key={k++} className="site-tok-num">{tok}</span>);
+    else if (JS_KEYWORDS.has(tok)) parts.push(<span key={k++} className="site-tok-kw">{tok}</span>);
+    else if (/^[A-Z]/.test(tok)) parts.push(<span key={k++} className="site-tok-cmp">{tok}</span>);
+    else parts.push(tok);
+    last = m.index + tok.length;
+  }
+  parts.push(source.slice(last));
+  return parts;
+};
+
+// theta-script gets the chart's own highlighter (same token classes as the
+// script editor, restyled subtly in site.scss); hex colors render in their
+// actual color
+const renderHexTint = (value, start, key) => (
+  <span key={key} className="site-tok-hex" style={{ color: value }}>{value}</span>
+);
+const highlightTheta = (source) => highlightSource(source, renderHexTint);
+
+const CodeBlock = ({ caption, code, lang = 'js' }) => (
   <figure className="site-code">
     {caption && <figcaption>{caption}</figcaption>}
-    <pre>{code}</pre>
+    <pre>{lang === 'theta' ? highlightTheta(code) : highlightJs(code)}</pre>
   </figure>
 );
 
@@ -490,7 +527,7 @@ function App() {
                 <span className="site-theta-link-arrow">→</span>
               </a>
             </div>
-            <CodeBlock caption="theta-script" code={SCRIPT_CODE} />
+            <CodeBlock caption="theta-script" code={SCRIPT_CODE} lang="theta" />
           </div>
           {!bench && (
             <>
